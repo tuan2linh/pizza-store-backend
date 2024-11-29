@@ -10,8 +10,16 @@ const port = process.env.PORT || 8080;
 // Connect to database
 connectDB();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000', // Remove trailing slash
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'token'],
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

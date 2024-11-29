@@ -16,13 +16,40 @@ const auth = async (req, res, next) => {
   }
 };
 
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+const isAdmin = async (req, res, next) => {
+  auth(req, res, () => {
+    if(req.user && req.user.role === 'admin') {
+      next();
+    } else {
+      res.status(403).json({ message: 'Access denied. Admin rights required.' });
+    }
+  });
+};
+
+const isUser = async (req, res, next) => {
+  auth(req, res, () => {
+    if(req.user && req.user.role === 'user') {
+      next();
+    } else {
+      res.status(403).json({ message: 'Access denied. User rights required.' });
+    }
+  });
+};
+
+const generateToken = (user) => {
+  const payload = {
+    userId: user._id,
+    username: user.username,
+    role: user.role
+  };
+  return jwt.sign(payload , process.env.JWT_SECRET, {
     expiresIn: '1h'  // Changed to 1 hour for better security
   });
 };
 
 module.exports = {
   auth,
-  generateToken
+  generateToken,
+  isAdmin,
+  isUser
 };

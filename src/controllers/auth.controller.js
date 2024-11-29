@@ -16,7 +16,7 @@ const register = async (req, res) => {
         const user = new User({ username, email, password });
         await user.save();
 
-        const token = generateToken(user._id);
+        const token = generateToken(user);
         const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
         
         user.refreshToken = refreshToken;
@@ -25,7 +25,9 @@ const register = async (req, res) => {
         res.status(201).json({
             message: 'User registered successfully',
             token,
-            refreshToken
+            refreshToken,
+            username: user.username,
+            role: user.role
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -41,7 +43,7 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        const token = generateToken(user._id);
+        const token = generateToken(user);
         const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
         
         user.refreshToken = refreshToken;
@@ -50,7 +52,9 @@ const login = async (req, res) => {
         res.json({
             message: 'Login successful',
             token,
-            refreshToken
+            refreshToken,
+            username: user.username,
+            role: user.role
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -84,7 +88,7 @@ const refreshToken = async (req, res) => {
             return res.status(401).json({ message: 'Invalid refresh token' });
         }
 
-        const newToken = generateToken(user._id);
+        const newToken = generateToken(user);
         res.json({ token: newToken });
     } catch (error) {
         res.status(401).json({ message: 'Invalid refresh token' });
