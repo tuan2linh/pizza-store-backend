@@ -93,7 +93,7 @@ const products = [
       description: 'Gà rán giòn tan, thơm ngon, đậm đà hương vị truyền thống.',
       price: { small: 59000, medium: 109000, large: 159000 },
       image: 'https://img.dominos.vn/375x200+G%C3%A0+Vi%C3%AAn+Ph%C3%B4+Mai+%C4%90%C3%BAt+L%C3%B2+new%402x.png',
-      mainCategories: ['Chicken'],
+      mainCategories: ['chicken'],
       subCategory: []
     },
     {
@@ -101,7 +101,7 @@ const products = [
       description: 'Gà rán giòn tan, cay nồng, thích hợp cho những ai yêu thích vị cay.',
       price: { small: 69000, medium: 119000, large: 169000 },
       image: 'https://img.dominos.vn/375x200+C%C3%A1nh+G%C3%A0+Ph%E1%BB%A7+X%E1%BB%91t+BBQ+HQ+new%402x.png',
-      mainCategories: ['Chicken'],
+      mainCategories: ['chicken'],
       subCategory: []
     },
     {
@@ -109,7 +109,7 @@ const products = [
       description: 'Gà nướng BBQ thơm lừng, đậm đà hương vị sốt BBQ đặc trưng.',
       price: { small: 79000, medium: 139000, large: 189000 },
       image: 'https://img.dominos.vn/375x200+C%C3%A1nh+G%C3%A0+Ph%E1%BB%A7+X%E1%BB%91t+BBQ+Ki%E1%BB%83u+M%E1%BB%B9+new%402x.png',
-      mainCategories: ['Chicken'],
+      mainCategories: ['chicken'],
       subCategory: []
     }
 ];
