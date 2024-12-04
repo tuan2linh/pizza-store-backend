@@ -55,7 +55,10 @@ const orderController = {
         try {
             const orders = await Order.find()
                 .sort('-createdAt')
-                .populate('userId', 'name email');
+                .populate('userId', 'name email')
+                .populate('items.productId')
+                .sort('-createdAt')
+                ;
 
             res.status(200).json({
                 success: true,
@@ -72,6 +75,8 @@ const orderController = {
     getUserOrders: async (req, res) => {
         try {
             const orders = await Order.find({ userId: req.user.userId })
+                .populate('userId', 'name email')
+                .populate('items.productId')
                 .sort('-createdAt');
 
             res.status(200).json({

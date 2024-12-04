@@ -11,6 +11,12 @@ const voucherController = {
                 data: voucher
             });
         } catch (error) {
+            if (error.code === 11000 && error.keyPattern?.voucher_code) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Voucher code "${req.body.voucher_code}" already exists`
+                });
+            }
             res.status(400).json({
                 success: false,
                 message: error.message
@@ -72,6 +78,12 @@ const voucherController = {
                 data: voucher
             });
         } catch (error) {
+            if (error.code === 11000 && error.keyPattern?.voucher_code) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Voucher code "${req.body.voucher_code}" already exists`
+                });
+            }
             res.status(400).json({
                 success: false,
                 message: error.message

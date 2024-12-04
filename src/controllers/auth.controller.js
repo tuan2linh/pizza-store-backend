@@ -1,10 +1,11 @@
 const User = require('../models/user.model');
 const { generateToken } = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, fullName, phoneNumber } = req.body;
         
         // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -12,8 +13,8 @@ const register = async (req, res) => {
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
-        // Create new user
-        const user = new User({ username, email, password });
+        // Create new user - password will be hashed by pre-save middleware
+        const user = new User({ username, email, password, fullName, phoneNumber });
         await user.save();
 
         const token = generateToken(user);
@@ -38,11 +39,12 @@ const login = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
-
-        if (!user || !(await user.comparePassword(password))) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+        if (!user) {
+            return res.status(401).json({ message: 'Không tìm thấy tên người dùng' });
         }
-
+        if (!await user.comparePassword(password)) {
+            return res.status(401).json({ message: 'Mật khẩu không đúng' });
+        }
         const token = generateToken(user);
         const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
         

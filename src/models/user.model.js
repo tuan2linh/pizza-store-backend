@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const mongoose_delete = require('mongoose-delete');
 
+const addressRegex = /^[^,]+, [^,]+, [^,]+, [^,]+$/;
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -36,7 +38,38 @@ const userSchema = new mongoose.Schema({
     refreshToken: {
         type: String,
         default: null
-    }
+    },
+    fullName: {
+        type: String,
+        required: [true, 'Full name is required'],
+        trim: true,
+        minlength: [3, 'Full name must be at least 3 characters'],
+        maxlength: [50, 'Full name cannot exceed 50 characters']
+    },
+    phoneNumber: {
+        type: String,
+        required: [true, 'Phone number is required'],
+        match: [/^\d{10,15}$/, 'Please enter a valid phone number']
+    },
+    addresses: [{
+        address: {
+            type: String
+        },
+        recipientName: {
+            type: String,
+            required: [true, 'Recipient name is required']
+        },
+        recipientEmail: {
+            type: String,
+            required: [true, 'Recipient email is required'],
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
+        },
+        recipientPhone: {
+            type: String,
+            required: [true, 'Recipient phone number is required'],
+            match: [/^\d{10,15}$/, 'Please enter a valid phone number']
+        }
+    }]
 }, {
     timestamps: true
 });
